@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <header>
+        <nav>
+          <ul>
+            <li><a href="{{ url_for('home') }}">Home</a></li>
+            <li><a href="{{ url_for('topics') }}">Forum</a></li>
+            {% if logged_in %}
+                <li class="dropdown">
+                    <a href="#" class="dropbtn">My Account</a>
+                    <div class="dropdown-content">
+                        <a href="{{ url_for('user') }}">Profile</a>
+                        <a href="{{ url_for('logout') }}">Logout</a>
+                    </div>
+                </li>
+            {% else %}
+                <li><a href="{{ url_for('login') }}">Login</a></li>
+            {% endif %}
+          </ul>
+        </nav>
+      </header>
+      <main>
+        {% block content %}{% endblock %}
+      </main>
+      <footer>
+        <p>Copyright &copy; 2023</p>
+      </footer>
+</body>
+</html>
