@@ -1,0 +1,72 @@
+/* set body to full height of viewport */
+body {
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  nav ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #202123;
+  }
+  
+  nav li {
+    float: right;
+  }
+  
+  nav li a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 3.5vh 30px;
+    text-decoration: none;
+  }
+  
+  nav li a:hover {
+    background-color: #3f3f3f;
+  }
+  
+  .dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #3f3f3f;
+    min-width: 140.433px;
+    z-index: 1;
+  }
+  
+  .dropdown-content a {
+    color: white;
+    text-decoration: none;
+    display: block;
+  }
+  
+  .dropdown-content a:hover {
+    background-color: #202123;
+  }
+  
+  .dropdown.active .dropdown-content {
+    display: block;
+  }
+  
+  /* set header and footer height, and background color */
+  header {
+    color: white;
+    text-decoration: none;
+    background-color: #202123;
+  }
+  
+  footer {
+    color: white;
+    height: 5vh;
+    background-color: #202123;
+  }
+  
+  /* make main take up remaining space */
+  main {
+    flex-grow: 1;
+  }
