@@ -7,6 +7,52 @@ body {
     flex-direction: column;
   }
   
+  form {
+    max-width: 500px;
+    background-color: #f7f7f7;
+    border-radius: 4px;
+    padding: 20px;
+    width: 50%;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+  }
+  
+  form input[type="text"],
+  form input[type="email"],
+  form input[type="password"],
+  form select {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    box-sizing: border-box;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  form input[type="submit"] {
+    background-color: #4CAF50;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  form input[type="submit"]:hover {
+    background-color: #45a049;
+  }
+  
+  form label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
+  
+  .form-error {
+    color: red;
+    margin-bottom: 10px;
+  }
+
   nav ul {
     list-style-type: none;
     margin: 0;
@@ -23,7 +69,7 @@ body {
     display: block;
     color: white;
     text-align: center;
-    padding: 3.5vh 30px;
+    padding: 1.5vh 30px;
     text-decoration: none;
   }
   
@@ -69,4 +115,7 @@ body {
   /* make main take up remaining space */
   main {
     flex-grow: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }

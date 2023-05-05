@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    {% if form.errors %}
+    <div class="alert alert-danger">
+        {{ form.errors }}
+        </div>
+        {% endif %}
+        <form method="POST" action="{{ url_for('register') }}">
+        <h2>Registration</h2>
+        {{ form.csrf_token }}
+        <label for="username">Username:</label>
+        {{ form.username(class_="form-control") }}
+        <br>
+        <label for="password">Password:</label>
+        {{ form.password(class_="form-control") }}
+        <br>
+        <label for="confirm">Confirm Password:</label>
+        {{ form.confirm(class_="form-control") }}
+        <br>
+        <input type="submit" class="btn btn-primary" value="Register">
+    </form>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        <ul class="flashes">
+        {% for category, message in messages %}
+            <li class="{{ category }}">{{ message }}</li>
+        {% endfor %}
+        </ul>
+    {% endif %}
+{% endwith %}
+{% endblock %}
