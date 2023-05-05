@@ -7,11 +7,34 @@ body {
     flex-direction: column;
   }
   
+  .container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+  }
+  .post {
+    border: 1px solid black;
+    padding: 10px;
+    margin-bottom: 10px;
+  }
+  .topic {
+    background-color: #f1f1f1;
+    color: #333;
+    border-radius: 5px;
+    padding: 10px;
+    margin: 8px;
+    text-align: center;
+    width: 50%;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  }
+
   form {
     max-width: 500px;
     background-color: #f7f7f7;
     border-radius: 4px;
     padding: 20px;
+    Margin: 10%;
     width: 50%;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
   }
@@ -77,6 +100,11 @@ body {
     background-color: #3f3f3f;
   }
   
+  .topic {
+    max-height: 400px;
+    overflow-y: scroll;
+  }
+
   .dropdown-content {
     display: none;
     position: absolute;
@@ -116,6 +144,6 @@ body {
   main {
     flex-grow: 1;
     display: flex;
-    justify-content: center;
     align-items: center;
+    flex-direction: column;
   }
