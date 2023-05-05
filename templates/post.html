@@ -1,1 +1,27 @@
 {% extends 'base.html' %}
+
+{% block content %}
+<p class="card-subtitle text-muted">Posted on {{ post.created_at }}</p>
+  <h1>{{ post.title }}</h1>
+  <p>{{ post.content }}</p>
+
+  <h2>Replies</h2>
+  {% for reply in replies %}
+    <div class="reply">
+      <p>{{ reply.content }}</p>
+      <small>by {{ reply.user.username }} on {{ reply.created_at.strftime('%B %d, %Y at %I:%M %p') }}</small>
+      <a href="{{ url_for('reply_to_reply', reply_id=reply.reply_id) }}">Reply</a>
+      <hr>
+      {% for sub_reply in reply.replies %}
+        <div class="sub-reply">
+          <p>{{ sub_reply.content }}</p>
+          <small>by {{ sub_reply.user.username }} on {{ sub_reply.created_at.strftime('%B %d, %Y at %I:%M %p') }}</small>
+          <a href="{{ url_for('reply_to_reply', reply_id=sub_reply.reply_id) }}">Reply</a>
+        </div>
+      {% endfor %}
+    </div>
+    <hr>
+  {% endfor %}
+
+  <a href="{{ url_for('reply_to_post', post_id=post.post_id) }}">Add a reply</a>
+{% endblock %}

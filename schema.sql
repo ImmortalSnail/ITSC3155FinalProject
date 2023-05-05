@@ -18,7 +18,6 @@ CREATE TABLE posts (
   user_id INTEGER NOT NULL REFERENCES users(user_id),
   title VARCHAR(255) NOT NULL,
   content TEXT NOT NULL,
-  image_url VARCHAR(255),
   upvotes INTEGER DEFAULT 0,
   downvotes INTEGER DEFAULT 0,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP

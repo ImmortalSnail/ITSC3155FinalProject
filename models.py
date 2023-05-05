@@ -46,9 +46,6 @@ class Post(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'), nullable=False)
     title = db.Column(db.String(255), nullable=False)
     content = db.Column(db.Text, nullable=False)
-    image_url = db.Column(db.String(255))
-    upvotes = db.Column(db.Integer, default=0)
-    downvotes = db.Column(db.Integer, default=0)
     created_at = db.Column(db.TIMESTAMP, server_default=db.func.current_timestamp())
 
     topic = db.relationship(Topic, backref=db.backref('posts', lazy='dynamic'))

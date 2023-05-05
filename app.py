@@ -5,8 +5,8 @@ import bcrypt
 from config import DB_USERNAME, DB_PASSWORD, DB_HOST, DB_PORT, DB_NAME, SECRET, SALT
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, login_user, login_required, current_user, logout_user
-from form import RegistrationForm, LoginForm
-from models import Topic, User, Post, PostReply, ReplyReply, Role
+from form import RegistrationForm, LoginForm, PostReplyForm, ReplyReplyForm, PostForm
+from models import Topic, User, Post, PostReply, ReplyReply
 from database import db
 from flask_wtf.csrf import CSRFProtect
 
@@ -61,10 +61,73 @@ def login():
     return render_template('login.html', form=form)
 
 
-@app.route('/post')
+@app.route('/posts/<int:post_id>')
 @login_required
-def post():
-    return render_template('post.html', logged_in=status())
+def view_post(post_id):
+    post = Post.query.get_or_404(post_id)
+    replies = post.replies.all()
+    return render_template('post.html', post=post, replies=replies, logged_in=status())
+
+
+@app.route('/create_post', methods=['GET', 'POST'])
+@login_required
+def create_post():
+    form = PostForm()
+
+    if form.validate_on_submit():
+        post = Post(
+            title=form.title.data,
+            content=form.content.data,
+            user_id=current_user.user_id,
+            topic_id=form.topic.data
+        )
+        db.session.add(post)
+        db.session.commit()
+        flash('Your post has been created!', 'success')
+        return redirect(url_for('topics'))
+
+    return render_template('create_post.html', title='Create Post', form=form, Topic=Topic, logged_in=status())
+
+@app.route('/posts/<int:post_id>/reply', methods=['GET', 'POST'])
+@login_required
+def reply_to_post(post_id):
+    post = Post.query.get_or_404(post_id)
+
+    form = PostReplyForm()
+
+    if form.validate_on_submit():
+        reply = PostReply(
+            user=current_user,
+            post=post,
+            content=form.content.data
+        )
+        db.session.add(reply)
+        db.session.commit()
+        flash('Your reply has been posted.')
+        return redirect(url_for('view_post', post_id=post.post_id))
+
+    return render_template('reply.html', post=post, form=form, logged_in=status())
+
+
+@app.route('/replies/<int:reply_id>/reply', methods=['GET', 'POST'])
+@login_required
+def reply_to_reply(reply_id):
+    reply = PostReply.query.get_or_404(reply_id)
+
+    form = ReplyReplyForm()
+
+    if form.validate_on_submit():
+        reply = ReplyReply(
+            user=current_user,
+            parent_reply=reply,
+            content=form.content.data
+        )
+        db.session.add(reply)
+        db.session.commit()
+        flash('Your reply has been posted.')
+        return redirect(url_for('view_post', post_id=reply.parent_reply_id))
+
+    return render_template('reply.html', post=reply.post, form=form, logged_in=status())
 
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -83,8 +146,8 @@ def register():
 @login_required
 def topics():
     topics = Topic.query.all()
-    return render_template('topics.html', logged_in=status(), topics=topics)
-
+    posts = Post.query.all()
+    return render_template('topics.html', logged_in=status(), topics=topics, posts=posts, Post=Post)
 
 @app.route('/user')
 @login_required
