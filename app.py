@@ -9,7 +9,7 @@ from form import RegistrationForm, LoginForm, PostReplyForm, ReplyReplyForm, Pos
 from models import Topic, User, Post, PostReply, ReplyReply
 from database import db
 from flask_wtf.csrf import CSRFProtect
-## If you see this, pull worked ##
+
 app = Flask(__name__, template_folder='templates')
 app.config['SECRET_KEY'] = f"{SECRET}"
 csrf = CSRFProtect(app)
@@ -160,7 +160,6 @@ def user():
 def logout():
     logout_user()
     return redirect(url_for('home'))
-
 
 if __name__ == "__main__":
     app.run()
