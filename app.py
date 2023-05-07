@@ -9,7 +9,7 @@ from form import RegistrationForm, LoginForm, PostReplyForm, ReplyReplyForm, Pos
 from models import Topic, User, Post, PostReply, ReplyReply
 from database import db
 from flask_wtf.csrf import CSRFProtect
-
+## Hello ##
 app = Flask(__name__, template_folder='templates')
 app.config['SECRET_KEY'] = f"{SECRET}"
 csrf = CSRFProtect(app)
