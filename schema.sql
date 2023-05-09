@@ -33,7 +33,9 @@ CREATE TABLE post_replies (
 
 CREATE TABLE reply_replies (
   reply_id SERIAL PRIMARY KEY,
-  parent_reply_id INTEGER NOT NULL REFERENCES post_replies(reply_id),
+  parent_reply_id INTEGER REFERENCES post_replies(reply_id),
+  parent_reply_reply_id INTEGER REFERENCES reply_replies(reply_id),
+  post_id INTEGER NOT NULL REFERENCES posts(post_id),
   user_id INTEGER NOT NULL REFERENCES users(user_id),
   content TEXT NOT NULL,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP

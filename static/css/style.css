@@ -6,6 +6,25 @@ body {
     display: flex;
     flex-direction: column;
   }
+
+  .sub-reply {
+    border-left: 2px solid #ddd;
+    margin-left: 10px;
+    padding-left: 10px;
+  }
+  
+  .child-reply {
+    border-left: 2px solid #eee;
+    margin-left: 10px;
+    padding-left: 10px;
+  }
+
+  /* Apply indentation styles to non-top-level replies */
+  .reply:not(.top-level-reply),
+  .sub-reply,
+  .child-reply {
+    margin-left: 10px;
+  }
   
   .container {
     display: flex;
@@ -140,6 +159,11 @@ body {
     background-color: #202123;
   }
   
+  textarea {
+    height: 200px;
+    width: 500px;
+  }
+
   /* make main take up remaining space */
   main {
     flex-grow: 1;

@@ -6,22 +6,27 @@
   <p>{{ post.content }}</p>
 
   <h2>Replies</h2>
+  <a href="{{ url_for('reply_to_post', post_id=post.post_id) }}">Add a reply</a>
   {% for reply in replies %}
     <div class="reply">
       <p>{{ reply.content }}</p>
       <small>by {{ reply.user.username }} on {{ reply.created_at.strftime('%B %d, %Y at %I:%M %p') }}</small>
-      <a href="{{ url_for('reply_to_reply', reply_id=reply.reply_id) }}">Reply</a>
-      <hr>
+      <a href="{{ url_for('reply_to_reply', reply_id=reply.reply_id, post_id=post.post_id) }}">Reply</a>
       {% for sub_reply in reply.replies %}
-        <div class="sub-reply">
-          <p>{{ sub_reply.content }}</p>
-          <small>by {{ sub_reply.user.username }} on {{ sub_reply.created_at.strftime('%B %d, %Y at %I:%M %p') }}</small>
-          <a href="{{ url_for('reply_to_reply', reply_id=sub_reply.reply_id) }}">Reply</a>
-        </div>
+        {{ render_child_replies(sub_reply) }}
       {% endfor %}
     </div>
     <hr>
   {% endfor %}
-
-  <a href="{{ url_for('reply_to_post', post_id=post.post_id) }}">Add a reply</a>
 {% endblock %}
+
+{% macro render_child_replies(reply) %}
+  <div class="sub-reply">
+    <p>{{ reply.content }}</p>
+    <small>by {{ reply.user.username }} on {{ reply.created_at.strftime('%B %d, %Y at %I:%M %p') }}</small>
+    <a href="{{ url_for('reply_to_child', reply_id=reply.reply_id,  post_id=post.post_id) }}">Reply</a>
+    {% for child_reply in reply.replies %}
+      {{ render_child_replies(child_reply) }}
+    {% endfor %}
+  </div>
+{% endmacro %}

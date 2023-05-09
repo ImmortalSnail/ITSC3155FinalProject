@@ -1,18 +1,14 @@
 {% extends 'base.html' %}
 
 {% block content %}
-  <h1>Reply to Post</h1>
-  <hr>
-
+<h1>Post a Reply</h1>
+<h2>Content you are replying to:</h2>
   <div class="card mb-3">
-    <div class="card-header">{{ post.title }}</div>
+    <h3 class="card-header">{{ post.title }}</h3>
     <div class="card-body">
       <p class="card-text">{{ post.content }}</p>
     </div>
   </div>
-
-  <h2>Post a Reply</h2>
-  <hr>
 
   <form method="POST">
     {{ form.hidden_tag() }}
@@ -20,38 +16,6 @@
       {{ form.content.label() }}
       {{ form.content(class="form-control") }}
     </div>
-    <button type="submit" class="btn btn-primary">Submit</button>
+    <input type="submit" class="btn btn-primary" value="Submit">
   </form>
-
-  <hr>
-
-  {% if post.replies %}
-    <h2>Replies</h2>
-    {% for reply in post.replies %}
-      <div class="card mb-3">
-        <div class="card-header">
-          {{ reply.user.username }}
-          <span class="float-end">{{ reply.created_at.strftime('%b %d, %Y %I:%M %p') }}</span>
-        </div>
-        <div class="card-body">
-          <p class="card-text">{{ reply.content }}</p>
-        </div>
-      </div>
-      <hr>
-      {% for sub_reply in reply.replies %}
-        <div class="card mb-3 ms-3">
-          <div class="card-header">
-            {{ sub_reply.user.username }}
-            <span class="float-end">{{ sub_reply.created_at.strftime('%b %d, %Y %I:%M %p') }}</span>
-          </div>
-          <div class="card-body">
-            <p class="card-text">{{ sub_reply.content }}</p>
-          </div>
-        </div>
-        <hr>
-      {% endfor %}
-    {% endfor %}
-  {% else %}
-    <p>No replies yet. Be the first to post a reply!</p>
-  {% endif %}
 {% endblock %}

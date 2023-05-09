@@ -29,5 +29,6 @@ class ReplyReplyForm(FlaskForm):
 class PostForm(FlaskForm):
     title = StringField('Title', validators=[DataRequired()])
     content = TextAreaField('Content', validators=[DataRequired()])
-    topic = SelectField('Topic', choices=[('1', 'Computer Hardware'), ('2', 'Computer Software'), ('3', 'Networking'), ('4', 'Security')], validators=[DataRequired()])
+    topic = SelectField('Topic', choices=[('1', 'Computer Hardware'), ('2', 'Computer Software'), ('3', 'Networking'), ('4', 'Cyberecurity'), 
+                                          ('5', 'Programming Langs'), ('6', 'AI'), ('7', 'Databases'), ('8', 'Web Dev'), ('8', 'Data Science'), ('10', 'Programming Help')], validators=[DataRequired()])
     submit = SubmitField('Post')

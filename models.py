@@ -15,8 +15,6 @@ class User(db.Model):
     user_id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(255), unique=True, nullable=False)
     password = db.Column(db.String(255), nullable=False)
-    bio = db.Column(db.Text)
-    profile_picture_url = db.Column(db.String(255))
     
     def is_authenticated(self):
         return True
@@ -69,11 +67,15 @@ class ReplyReply(db.Model):
     __tablename__ = 'reply_replies'
 
     reply_id = db.Column(db.Integer, primary_key=True)
-    parent_reply_id = db.Column(db.Integer, db.ForeignKey('post_replies.reply_id'), nullable=False)
+    parent_reply_id = db.Column(db.Integer, db.ForeignKey('post_replies.reply_id'))
+    parent_reply_reply_id = db.Column(db.Integer, db.ForeignKey('reply_replies.reply_id'))
+    post_id = db.Column(db.Integer, db.ForeignKey('posts.post_id'), nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'), nullable=False)
     content = db.Column(db.Text, nullable=False)
     created_at = db.Column(db.TIMESTAMP, server_default=db.func.current_timestamp())
 
-    parent_reply = db.relationship(PostReply, backref=db.backref('replies', lazy='dynamic'))
-    user = db.relationship(User, backref=db.backref('reply_replies', lazy='dynamic'))
+    parent_reply = db.relationship('PostReply', backref=db.backref('replies', lazy='dynamic'))
+    parent_reply_reply = db.relationship('ReplyReply', remote_side=[reply_id], backref=db.backref('replies', lazy='dynamic'))
+    user = db.relationship('User', backref=db.backref('reply_replies', lazy='dynamic'))
+    post = db.relationship('Post', backref=db.backref('reply_replies', lazy='dynamic'))
     

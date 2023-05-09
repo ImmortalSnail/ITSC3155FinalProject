@@ -66,6 +66,7 @@ def login():
 def view_post(post_id):
     post = Post.query.get_or_404(post_id)
     replies = post.replies.all()
+    print(replies)
     return render_template('post.html', post=post, replies=replies, logged_in=status())
 
 
@@ -109,10 +110,12 @@ def reply_to_post(post_id):
     return render_template('reply.html', post=post, form=form, logged_in=status())
 
 
-@app.route('/replies/<int:reply_id>/reply', methods=['GET', 'POST'])
+@app.route('/replies/<int:reply_id>/<int:post_id>/reply', methods=['GET', 'POST'])
 @login_required
-def reply_to_reply(reply_id):
+def reply_to_reply(reply_id, post_id):
     reply = PostReply.query.get_or_404(reply_id)
+    post = Post.query.get_or_404(post_id)
+
 
     form = ReplyReplyForm()
 
@@ -120,15 +123,37 @@ def reply_to_reply(reply_id):
         reply = ReplyReply(
             user=current_user,
             parent_reply=reply,
+            post_id=post_id,
             content=form.content.data
         )
         db.session.add(reply)
         db.session.commit()
         flash('Your reply has been posted.')
-        return redirect(url_for('view_post', post_id=reply.parent_reply_id))
+        return redirect(url_for('view_post', post_id=post.post_id))
 
     return render_template('reply.html', post=reply.post, form=form, logged_in=status())
 
+@app.route('/replies/<int:reply_id>/<int:post_id>/replyreply', methods=['GET', 'POST'])
+@login_required
+def reply_to_child(reply_id, post_id):
+    parent_reply_reply = ReplyReply.query.get_or_404(reply_id)
+    post = parent_reply_reply
+
+    form = ReplyReplyForm()
+
+    if form.validate_on_submit():
+        reply = ReplyReply(
+            user=current_user,
+            parent_reply_reply=parent_reply_reply,
+            post_id=post_id,
+            content=form.content.data
+        )
+        db.session.add(reply)
+        db.session.commit()
+        flash('Your reply has been posted.')
+        return redirect(url_for('view_post', post_id=post.post_id))
+
+    return render_template('reply.html', post=post, form=form, logged_in=status())
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -148,12 +173,6 @@ def topics():
     topics = Topic.query.all()
     posts = Post.query.all()
     return render_template('topics.html', logged_in=status(), topics=topics, posts=posts, Post=Post)
-
-@app.route('/user')
-@login_required
-def user():
-    return render_template('user.html', logged_in=status())
-
 
 @app.route('/logout')
 @login_required
